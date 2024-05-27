@@ -39,6 +39,11 @@ public class CucumberDoublyLinkedListSteps {
         arrayFromValues = values.stream().mapToDouble(Double::doubleValue).toArray();
     }
 
+    @Given("^a list containing the following elements:$")
+    public void aListContainingTheFollowingElements(List<Double> values) {
+        values.forEach(list::append);
+    }
+
     // When -----------------------------------------------------------------------
 
     @When("^I append an element with value (\\d+.\\d+)$")
@@ -57,6 +62,11 @@ public class CucumberDoublyLinkedListSteps {
         logger.info("%s not implemented yet.".formatted(Thread.currentThread().getStackTrace()[1].getMethodName()));
     }
 
+    @When("^I insert an element with value (\\d+.\\d+)$")
+    public void iInsertAnElementWithValue(double value) {
+        list.insert(value);
+    }
+
     // Then -----------------------------------------------------------------------
 
     @Then("^the list should contain that element$")
@@ -71,7 +81,8 @@ public class CucumberDoublyLinkedListSteps {
 
     @Then("^the list should contain the elements in the following order:$")
     public void theListShouldContainTheElementsInTheFollowingOrder(List<Double> values) {
-        logger.info("%s not implemented yet.".formatted(Thread.currentThread().getStackTrace()[1].getMethodName()));
+        double[] arrayFromValues = values.stream().mapToDouble(Double::doubleValue).toArray();
+        Assertions.assertArrayEquals(arrayFromValues, list.asArray());
     }
 
     @Then("the list should contain {int} element(s)")
