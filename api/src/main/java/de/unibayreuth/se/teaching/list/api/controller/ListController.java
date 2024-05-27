@@ -6,6 +6,7 @@ import de.unibayreuth.se.teaching.list.business.ports.Value;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,6 +35,14 @@ public class ListController {
                 .toList()
         );
         // ResponseEntity.ok(...) is a shortcut for "create a response entity with status 200 (OK) and the provided body
+        return ResponseEntity.ok(listService.get().stream()
+                .map(this::toDto)
+                .toList());
+    }
+
+    @DeleteMapping(value = "/list")
+    public ResponseEntity<List<ListElementDto>> clearList() {
+        listService.clear();
         return ResponseEntity.ok(listService.get().stream()
                 .map(this::toDto)
                 .toList());
